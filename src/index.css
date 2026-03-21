@@ -1,11 +1,45 @@
 @import "tailwindcss";
 
+/* 1. Root & Global Settings */
 :root {
-  background-color: #000; /* Force dark mode immediately */
+  background-color: #000;
+  /* CRITICAL for GSAP: Stops Windows/Chrome from fighting the animation */
+  scroll-behavior: auto !important; 
 }
 
+/* 2. Global Body Styles */
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-color: #000;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 3. Layout Utilities */
+section {
+  /* Gives GSAP enough 'scroll distance' to trigger enter/exit animations */
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Optional: Smooth out the scrollbar for the dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
 }
