@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { ArrowDown, Radio, Activity, Navigation } from "lucide-react";
 
 export default function Hero() {
   const rootRef = useRef(null);
@@ -10,127 +10,87 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-hero-item]",
-        { y: 18, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.08 }
+        { y: 20, opacity: 0, filter: "blur(10px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "expo.out", stagger: 0.1 }
       );
       gsap.to("[data-orb]", {
-        y: -12,
-        duration: 2.8,
+        scale: 1.1,
+        opacity: 0.8,
+        duration: 3,
         ease: "sine.inOut",
         yoyo: true,
         repeat: -1,
-        stagger: 0.25,
+        stagger: 0.3,
       });
     }, rootRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={rootRef}
-      id="top"
-      className="relative overflow-hidden pt-10 sm:pt-14"
-    >
+    <section ref={rootRef} id="top" className="relative overflow-hidden bg-[#00080d] pt-20">
+      {/* Deep Sea Ambient Lights */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-24 top-10 size-[420px] rounded-full bg-fuchsia-500/20 blur-3xl" />
-        <div className="absolute -right-24 top-20 size-[520px] rounded-full bg-cyan-400/15 blur-3xl" />
-        <div className="absolute inset-x-0 bottom-[-180px] mx-auto h-[520px] max-w-6xl rounded-[48px] bg-gradient-to-tr from-white/5 via-white/0 to-white/5 blur-2xl" />
+        <div className="absolute -left-24 top-0 size-[600px] rounded-full bg-cyan-900/20 blur-[120px]" />
+        <div className="absolute -right-24 bottom-0 size-[600px] rounded-full bg-blue-900/10 blur-[120px]" />
       </div>
 
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="grid items-center gap-10 lg:grid-cols-12">
+      <div className="mx-auto max-w-6xl px-6 relative z-10">
+        <div className="grid items-center gap-16 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <div
-              data-hero-item
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/80"
-            >
-              <Sparkles className="size-4 text-white/80" />
-              Modern, clean, motion-first starter
+            <div data-hero-item className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400">
+              <Radio className="size-3 animate-pulse" /> Signal: Established
             </div>
 
-            <h1
-              data-hero-item
-              className="mt-5 text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl"
-            >
-              A story-driven portfolio that feels crafted, not templated.
+            <h1 data-hero-item className="mt-8 text-6xl font-black tracking-tighter text-white md:text-8xl leading-[0.85] uppercase">
+              The <span className="text-transparent bg-clip-text bg-gradient-to-b from-cyan-400 to-blue-700">Descent</span>
             </h1>
 
-            <p
-              data-hero-item
-              className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/70"
-            >
-              Use this as your “Awwwards-style” foundation: strong typography,
-              tasteful glass UI, and subtle GSAP motion—ready to evolve into your
-              personal brand.
+            <p data-hero-item className="mt-8 max-w-xl text-lg leading-relaxed text-zinc-400 font-medium">
+              95% of the Earth's oceans remain unexplored. You are cleared for a vertical expedition into the Hadal zone. Prepare for pressure exceeding 15,000 PSI.
             </p>
 
-            <div data-hero-item className="mt-7 flex flex-wrap gap-3">
-              <a
-                href="#work"
-                className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90"
-              >
-                Explore work
+            <div data-hero-item className="mt-10 flex flex-wrap gap-4">
+              <a href="#story" className="group inline-flex items-center justify-center rounded-xl bg-cyan-500 px-8 py-4 text-sm font-bold text-black transition-all hover:bg-cyan-400 hover:scale-105">
+                Initiate Dive Sequence
               </a>
-              <a
-                href="#story"
-                className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10"
-              >
-                Read the story
-              </a>
+              <div className="flex items-center gap-4 px-4 text-zinc-500 text-[10px] uppercase tracking-widest font-bold">
+                <Navigation className="size-4 text-cyan-500" /> Site: Challenger Deep
+              </div>
             </div>
 
-            <div
-              data-hero-item
-              className="mt-10 flex items-center gap-2 text-xs text-white/50"
-            >
-              <ArrowDown className="size-4" />
-              Scroll for the narrative
+            <div data-hero-item className="mt-16 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-500/50">
+              <ArrowDown className="size-4 animate-bounce" /> Scroll to depressurize
             </div>
           </div>
 
           <div className="lg:col-span-5">
-            <div
-              data-hero-item
-              className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-5"
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(34,211,238,0.20),transparent_40%),radial-gradient(circle_at_60%_90%,rgba(217,70,239,0.16),transparent_45%)]" />
+            <div data-hero-item className="relative overflow-hidden rounded-[32px] border border-white/5 bg-zinc-900/20 p-8 backdrop-blur-3xl">
+              <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-white/40">Submersible Status</div>
+                <Activity className="size-4 text-green-500" />
+              </div>
 
-              <div className="relative">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-semibold text-white">
-                    Snapshot
+              <div className="mt-6 space-y-4">
+                {[
+                  { k: "Hull Integrity", v: "100%", c: "text-green-400" },
+                  { k: "Oxygen Supply", v: "Optimal", c: "text-cyan-400" },
+                  { k: "External Temp", v: "2.4°C", c: "text-blue-400" },
+                ].map((row) => (
+                  <div key={row.k} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/5">
+                    <div className="text-[10px] uppercase text-white/40">{row.k}</div>
+                    <div className={`text-xs font-mono font-bold ${row.c}`}>{row.v}</div>
                   </div>
-                  <div className="text-xs text-white/60">2026</div>
-                </div>
+                ))}
+              </div>
 
-                <div className="mt-4 grid gap-3">
-                  {[
-                    { k: "Focus", v: "Design-engineering" },
-                    { k: "Tools", v: "React • Tailwind • GSAP" },
-                    { k: "Vibe", v: "Editorial • Minimal • Bold" },
-                  ].map((row) => (
-                    <div
-                      key={row.k}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3"
-                    >
-                      <div className="text-xs text-white/60">{row.k}</div>
-                      <div className="text-xs font-semibold text-white/90">
-                        {row.v}
-                      </div>
-                    </div>
-                  ))}
+              <div className="mt-8 grid grid-cols-2 gap-4">
+                <div data-orb className="h-20 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 flex flex-col items-center justify-center">
+                   <div className="text-[8px] uppercase text-cyan-500 mb-1">Sonar</div>
+                   <div className="size-2 rounded-full bg-cyan-500 animate-ping" />
                 </div>
-
-                <div className="mt-5 grid grid-cols-3 gap-3">
-                  {["A", "W", "W"].map((t, i) => (
-                    <div
-                      key={`${t}-${i}`}
-                      data-orb
-                      className="grid aspect-square place-items-center rounded-2xl border border-white/10 bg-white/5 text-lg font-semibold text-white/90"
-                    >
-                      {t}
-                    </div>
-                  ))}
+                <div data-orb className="h-20 rounded-2xl border border-white/10 bg-white/5 flex flex-col items-center justify-center">
+                   <div className="text-[8px] uppercase text-white/40 mb-1">Depth Lock</div>
+                   <div className="font-mono text-white text-xs">ACTIVE</div>
                 </div>
               </div>
             </div>

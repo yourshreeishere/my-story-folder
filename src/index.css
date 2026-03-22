@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
-/* 1. Root & Global Settings */
 :root {
   background-color: #000;
-  /* CRITICAL for GSAP: Stops Windows/Chrome from fighting the animation */
-  scroll-behavior: auto !important; 
+  /* Disable smooth scroll so GSAP can handle the math precisely */
+  scroll-behavior: auto !important;
 }
 
-/* 2. Global Body Styles */
 body {
   margin: 0;
   padding: 0;
@@ -15,18 +13,14 @@ body {
   background-color: #000;
   color: white;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 3. Layout Utilities */
 section {
-  /* Gives GSAP enough 'scroll distance' to trigger enter/exit animations */
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
 }
 
-/* Optional: Smooth out the scrollbar for the dark theme */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -39,7 +33,26 @@ section {
   background: #333;
   border-radius: 10px;
 }
+/* Add to your index.css */
+.ocean-particles {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 50px 160px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: drift 20s linear infinite;
+}
 
-::-webkit-scrollbar-thumb:hover {
-  background: #444;
+@keyframes drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100px); }
+}
+
+h1, h2 {
+  font-family: 'Inter', sans-serif; /* Make sure you have a bold sans-serif loaded */
+  text-transform: uppercase;
 }
