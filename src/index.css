@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
+/* ─── Root & Scroll ──────────────────────────────────────────────────────── */
 :root {
   background-color: #000;
-  /* Disable smooth scroll so GSAP can handle the math precisely */
   scroll-behavior: auto !important;
 }
 
@@ -15,44 +15,78 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-section {
-  min-height: 100vh;
-  position: relative;
-}
+/* ─── Custom Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #1e3a3a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #0891b2; }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
 
-::-webkit-scrollbar-track {
-  background: #000;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 10px;
-}
-/* Add to your index.css */
+/* ─── Marine snow (CSS fallback layer) ───────────────────────────────────── */
 .ocean-particles {
   position: absolute;
   inset: 0;
-  background-image: 
-    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.5px 1.5px at 50px 160px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0));
+  background-image:
+    radial-gradient(1px 1px at 20px 30px,  rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px,  rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px,  rgba(255,255,255,0.9), rgba(0,0,0,0));
   background-repeat: repeat;
   background-size: 200px 200px;
   animation: drift 20s linear infinite;
+  will-change: transform;
 }
 
 @keyframes drift {
-  from { transform: translateY(0); }
-  to { transform: translateY(-100px); }
+  from { transform: translateY(0);    }
+  to   { transform: translateY(-200px); }
 }
 
-h1, h2 {
-  font-family: 'Inter', sans-serif; /* Make sure you have a bold sans-serif loaded */
-  text-transform: uppercase;
+/* ─── Phantom GPU promotion ──────────────────────────────────────────────── */
+[id^="phantom-"] {
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
 }
+
+/* ─── Scanner line edge fade ─────────────────────────────────────────────── */
+.scanner-line {
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(
+    90deg, transparent 0%, white 6%, white 94%, transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg, transparent 0%, white 6%, white 94%, transparent 100%
+  );
+}
+
+/* ─── Hadal depth bar critical pulse ────────────────────────────────────── */
+@keyframes depth-bar-critical {
+  0%, 100% { box-shadow: 0 0 8px 0px rgba(239,68,68,0.5); }
+  50%       { box-shadow: 0 0 18px 5px rgba(239,68,68,0.85); }
+}
+.depth-bar-critical {
+  animation: depth-bar-critical 1s ease-in-out infinite;
+  background-color: #f87171 !important;
+}
+
+/* ─── CSS-only glitch helper (opt-in) ────────────────────────────────────── */
+@keyframes glitch-clip {
+  0%   { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 0); }
+  20%  { clip-path: inset(92% 0 1%  0); transform: translate(2px, 0);  }
+  40%  { clip-path: inset(43% 0 1%  0); transform: translate(-2px, 0); }
+  60%  { clip-path: inset(25% 0 58% 0); transform: translate(2px, 0);  }
+  80%  { clip-path: inset(54% 0 7%  0); transform: translate(-2px, 0); }
+  100% { clip-path: inset(58% 0 43% 0); transform: translate(2px, 0);  }
+}
+.css-glitch { position: relative; }
+.css-glitch::before,
+.css-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  animation: glitch-clip 0.4s steps(1) infinite;
+}
+.css-glitch::before { color: #22d3ee; animation-delay: 0s;    }
+.css-glitch::after  { color: #f87171; animation-delay: 0.15s; }
