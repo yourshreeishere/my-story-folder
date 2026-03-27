@@ -15,17 +15,41 @@ body {
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #1e3a3a; border-radius: 10px; }
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: #000; }
+::-webkit-scrollbar-thumb  { background: #1e3a3a; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #0891b2; }
 
 /* ─── Typography ─────────────────────────────────────────────────────────── */
 h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: God Rays (Surface Caustics 0m–200m)
-   CSS-only volumetric light beams. GSAP fades opacity to 0 by 200m.
+   STORY MODE OVERLAY
+   Full-screen navy void. GSAP manages display/opacity transitions.
+   The .story-mode-overlay class just sets base styles.
+═══════════════════════════════════════════════════════════════════════════ */
+.story-mode-overlay {
+  background: #001D2D;
+  /* display:none by default — GSAP sets to flex on enter */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SONAR GRID RINGS (Story Mode background)
+   Pulse outward from center, fade to transparent at edge.
+═══════════════════════════════════════════════════════════════════════════ */
+@keyframes sonar-grid-pulse {
+  0%   { r: 20;  opacity: 0.5; }
+  80%  { r: 320; opacity: 0.0; }
+  100% { r: 320; opacity: 0.0; }
+}
+
+.sonar-grid-ring {
+  animation: sonar-grid-pulse 4s ease-out infinite;
+  transform-origin: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GOD RAYS (Surface Caustics — 0m to 200m)
 ═══════════════════════════════════════════════════════════════════════════ */
 .god-rays {
   position: absolute;
@@ -33,7 +57,6 @@ h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
   overflow: hidden;
   pointer-events: none;
 }
-
 .god-rays::before,
 .god-rays::after {
   content: "";
@@ -45,72 +68,54 @@ h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
   transform-origin: top center;
   background: repeating-conic-gradient(
     from 0deg at 50% 0%,
-    rgba(34, 211, 238, 0.04) 0deg,
-    transparent               4deg,
-    transparent               8deg,
-    rgba(34, 211, 238, 0.03) 10deg,
-    transparent               14deg,
-    transparent               20deg
+    rgba(34,211,238,0.04)  0deg, transparent 4deg,
+    transparent            8deg, rgba(34,211,238,0.03) 10deg,
+    transparent           14deg, transparent 20deg
   );
   animation: god-ray-sweep 12s ease-in-out infinite alternate;
 }
-
 .god-rays::after {
   animation-delay: -6s;
   opacity: 0.6;
   background: repeating-conic-gradient(
     from 0deg at 50% 0%,
-    transparent               0deg,
-    rgba(100, 220, 255, 0.03) 5deg,
-    transparent               9deg,
-    rgba(34, 211, 238, 0.02)  14deg,
-    transparent               18deg,
-    transparent               25deg
+    transparent               0deg, rgba(100,220,255,0.03) 5deg,
+    transparent               9deg, rgba(34,211,238,0.02) 14deg,
+    transparent              18deg, transparent 25deg
   );
 }
-
 @keyframes god-ray-sweep {
   from { transform: translateX(-50%) rotate(-6deg); }
   to   { transform: translateX(-50%) rotate(6deg);  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: Sonar Ripple on Card Hover
-   Expanding rings from cursor position. Pure CSS keyframe — GSAP not needed.
+   SONAR RIPPLE (card hover)
 ═══════════════════════════════════════════════════════════════════════════ */
 @keyframes sonar-ripple {
-  0%   { transform: scale(1);   opacity: 0.7; width: 8px; height: 8px; }
-  100% { transform: scale(18);  opacity: 0;   width: 8px; height: 8px; }
+  0%   { transform: scale(1);  opacity: 0.7; width: 8px; height: 8px; }
+  100% { transform: scale(18); opacity: 0;   width: 8px; height: 8px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: Chromatic Aberration (Ringwoodite ending at 11,000m)
-   Applied to .chroma-aberration (overlay div) and .chroma-text (text elements).
+   CHROMATIC ABERRATION (Phase 6 / 11,000m)
 ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Full-screen aberration overlay — subtle RGB channel split on everything */
 .chroma-aberration {
   pointer-events: none;
   mix-blend-mode: screen;
   animation: chroma-shift 0.18s steps(1) infinite;
 }
-
 @keyframes chroma-shift {
   0%  { box-shadow: inset 3px 0 0 rgba(255,0,80,0.08), inset -3px 0 0 rgba(0,200,255,0.08); }
   25% { box-shadow: inset -2px 0 0 rgba(255,0,80,0.05), inset 2px 0 0 rgba(0,200,255,0.10); }
   50% { box-shadow: inset 4px 0 0 rgba(255,0,80,0.10), inset -4px 0 0 rgba(0,200,255,0.06); }
   75% { box-shadow: inset -1px 0 0 rgba(255,0,80,0.04), inset 1px 0 0 rgba(0,200,255,0.12); }
 }
-
-/* Text-level aberration — pseudo-element shadow trick */
 .chroma-text {
   position: relative;
-  text-shadow:
-    2px  0   0 rgba(255, 30,  80,  0.5),
-    -2px 0   0 rgba(0,  200, 255,  0.5);
+  text-shadow: 2px 0 0 rgba(255,30,80,0.5), -2px 0 0 rgba(0,200,255,0.5);
   animation: chroma-text-flicker 0.22s steps(1) infinite;
 }
-
 @keyframes chroma-text-flicker {
   0%  { text-shadow:  2px 0 0 rgba(255,30,80,0.5),  -2px 0 0 rgba(0,200,255,0.5); }
   33% { text-shadow: -3px 0 0 rgba(255,30,80,0.6),   3px 0 0 rgba(0,200,255,0.4); }
@@ -118,33 +123,25 @@ h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: Ringwoodite Crystal Texture (Conclusion section at 11,000m)
-   CSS-only crystalline facet pattern — no image needed.
+   RINGWOODITE CRYSTAL TEXTURE (Conclusion section, bottom state)
 ═══════════════════════════════════════════════════════════════════════════ */
 .ringwoodite-crystal {
   background-image:
     linear-gradient(60deg,  rgba(59,130,246,0.6) 25%, transparent 25%),
-    linear-gradient(-60deg, rgba(37, 99,235,0.4) 25%, transparent 25%),
+    linear-gradient(-60deg, rgba(37,99,235,0.4)  25%, transparent 25%),
     linear-gradient(60deg,  transparent 75%, rgba(96,165,250,0.3) 75%),
     linear-gradient(-60deg, transparent 75%, rgba(59,130,246,0.5) 75%);
   background-size: 40px 70px;
   background-position: 0 0, 0 0, 20px 35px, 20px 35px;
   animation: crystal-shift 4s linear infinite;
 }
-
 @keyframes crystal-shift {
-  0%   { background-position: 0 0,  0 0,  20px 35px, 20px 35px; }
+  0%   { background-position: 0 0, 0 0, 20px 35px, 20px 35px; }
   100% { background-position: 40px 0, 40px 0, 60px 35px, 60px 35px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: Dynamic Background Filter
-   CSS filter transitions are handled via inline JS style in the component.
-   This rule ensures no CSS transition fights with JS updates.
-═══════════════════════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: Phantom GPU promotion
+   PHANTOM GPU promotion
 ═══════════════════════════════════════════════════════════════════════════ */
 [id^="phantom-"] {
   will-change: transform, opacity;
@@ -152,7 +149,7 @@ h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: Scanner Line edge mask
+   SCANNER LINE edge mask
 ═══════════════════════════════════════════════════════════════════════════ */
 .scanner-line {
   pointer-events: none;
@@ -161,7 +158,7 @@ h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE: CSS Glitch helper (opt-in utility class)
+   CSS GLITCH UTILITY (opt-in)
 ═══════════════════════════════════════════════════════════════════════════ */
 @keyframes glitch-clip {
   0%   { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 0); }
@@ -182,23 +179,16 @@ h1, h2 { font-family: 'Inter', sans-serif; text-transform: uppercase; }
 .css-glitch::before { color: #22d3ee; animation-delay: 0s;    }
 .css-glitch::after  { color: #f87171; animation-delay: 0.15s; }
 
-/* ─── Hadal depth-bar critical pulse ─────────────────────────────────────── */
-@keyframes depth-bar-critical {
-  0%, 100% { box-shadow: 0 0 8px 0px rgba(239,68,68,0.5); }
-  50%       { box-shadow: 0 0 18px 5px rgba(239,68,68,0.85); }
-}
-.depth-bar-critical {
-  animation: depth-bar-critical 1s ease-in-out infinite;
-  background-color: #f87171 !important;
-}
-
-/* ─── Reduced motion safety net ──────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   .god-rays::before,
   .god-rays::after,
   .chroma-aberration,
   .chroma-text,
-  .ringwoodite-crystal {
+  .ringwoodite-crystal,
+  .sonar-grid-ring {
     animation: none !important;
   }
 }
