@@ -182,7 +182,10 @@ export default function Story() {
     // Reset ref and HUD immediately
     scrollYRef.current = 0;
     setHudVisible(false);
-    gsap.to(window, { duration: 1.2, scrollTo: { y: 0 }, ease: "power3.inOut" });
+    gsap.to(window, { duration: 1.2, scrollTo: { y: 0 }, ease: "power3.inOut",onComplete: () => {
+      ScrollTrigger.refresh(); 
+      window.location.reload(); 
+    } });
   }, []);
 
   // ── Bottom impact ──────────────────────────────────────────────────────────
@@ -259,12 +262,16 @@ export default function Story() {
       const section = rootRef.current;
       if (!section) return;
       const sy = window.scrollY;
+      if (sy > 10) { 
+        if (!diveInitiated) setDiveInitiated(true); // Locks the sonar/dive mode to "ON"
+        if (!hudVisible) setHudVisible(true);    // Locks the HUD to "VISIBLE"
+      }
 
       // HUD FIX: update ref synchronously first, then derive hudVisible
       // without waiting for a React re-render cycle.
       scrollYRef.current = sy;
       // Set HUD visible state: show when scrolled even 1px, hide only at top
-      setHudVisible(sy > 0);
+      
 
       setScrollY(sy);
       const rect = section.getBoundingClientRect();
